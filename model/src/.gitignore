@@ -1,0 +1,8 @@
+__pycache__
+.ipynb_checkpoints
+*.png
+/MLCLI/
+saved_model.pb/
+saved_model.pb
+fabric_encoder.joblib
+model.tflite
