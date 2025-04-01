@@ -6,6 +6,9 @@ Identify textile materials based on measurements with a portable handheld device
 
 > **Client** in this case refers to a single embedded device, which takes NIR measurements from the real objects. </br>
 > [Client documentation](client/README.md)
+- Designed for Raspberry Pi Zero W1.1 Microcontroller
+- Independent Python program that monitors for button presses, configuration changes and other asynchronous tasks.
+- Installation instructions and example configuration
 
 > **Server** or backend in this case takes the measurements and uses given algorithms to detect material. </br>
 > [Server documentation](server/README.md)
