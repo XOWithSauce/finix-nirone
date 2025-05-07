@@ -130,20 +130,18 @@ class EventManager():
                     self.backgr_rad_values = data
                 elif (self.previous_event == "m"): # We are currently running measurement that we want to predict
                     # This is dependant on reference values.
-                    print("Calculating Absorbance")
+                    print("Calculating Reflectance")
                     print(type(self.white_ref_values))
                     print("WHITE REF LIST", len(self.white_ref_values), "BACKGR RAD LIST: ", len(self.backgr_rad_values))
                     if (self.white_ref_calibrated & self.backgr_rad_calibrated):
                         try: 
-                            print("abs")
-                            absorbance = [(m - d) / (w - d) for m, w, d in zip(data, self.white_ref_values, self.backgr_rad_values)]
+                            reflectance = [(m - d) / (w - d) for m, w, d in zip(data, self.white_ref_values, self.backgr_rad_values)]
                             print("minmax")
-                            min_absorption = min(absorbance)
-                            max_absorption = max(absorbance)
+                            min_absorption = min(reflectance)
+                            max_absorption = max(reflectance)
                             print("Scaling to 0... 1 ...")
-                            scaled_absorption = [(a - min_absorption) / (max_absorption - min_absorption) for a in absorbance]
-                            print("SCALED: ", scaled_absorption)
-                            self.server_response = self.bsd_client.local_inference(scaled_absorption)
+                            scaled_reflectance = [(a - min_reflectance) / (max_reflectance - min_reflectance) for a in reflectance]
+                            self.server_response = self.bsd_client.local_inference(scaled_reflectance)
                         except Exception as e:
                             print("Failed to pre-treat sensor data: ", e)
                 
