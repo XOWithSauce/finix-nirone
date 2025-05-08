@@ -1,12 +1,19 @@
 const express = require('express');
 const app = express();
+const RateLimit = require('express-rate-limit');
 const request_logger = require('./middlewares/request_logger');
 const routes = require('./routes/v1');
 const not_found = require('./middlewares/not-found');
 
+// Rate limiting middleware
+const limiter = RateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+
 // Logging requests middleware
 app.use(request_logger);
-
 // GET http://localhost:3000/
 app.get('/', (req, res) => res.sendStatus(200));
 
