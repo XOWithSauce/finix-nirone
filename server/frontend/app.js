@@ -76,7 +76,7 @@ function renderDevicePlaceholders(deviceCount, deviceIds) {
     const dropdown = createDropdownElement(i + 1, deviceIds[i]);
     contentDiv.appendChild(dropdown);
   }
-  doPolling();
+  //doPolling();
 }
 
 function createDropdownElement(deviceNumber, deviceId) {
@@ -111,11 +111,8 @@ function createDropdownElement(deviceNumber, deviceId) {
 }
 
 function doPolling() {
-  //console.log("Do Polling!!!")
   function poll() {
-    //console.log("poll outer, deviceIdList: ", deviceIdList);
     for (let i = 0; i < deviceIdList.length; i++) {
-      //console.log("Doing polling for device: ",deviceIdList[i]);
       getMeas(deviceIdList[i]);
     }
     setTimeout(poll, 5000);

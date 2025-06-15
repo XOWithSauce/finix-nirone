@@ -137,10 +137,12 @@ class EventManager():
                         try: 
                             reflectance = [(m - d) / (w - d) for m, w, d in zip(data, self.white_ref_values, self.backgr_rad_values)]
                             print("minmax")
-                            min_absorption = min(reflectance)
-                            max_absorption = max(reflectance)
+                            min_reflectance = min(reflectance)
+                            max_reflectance = max(reflectance)
                             print("Scaling to 0... 1 ...")
                             scaled_reflectance = [(a - min_reflectance) / (max_reflectance - min_reflectance) for a in reflectance]
+                            # Todo: Apply savgol filter (simplify based on https://github.com/scipy/scipy/blob/v1.15.3/scipy/signal/_savitzky_golay.py)
+                            # use Params from Model / ThesisBase
                             self.server_response = self.bsd_client.local_inference(scaled_reflectance)
                         except Exception as e:
                             print("Failed to pre-treat sensor data: ", e)

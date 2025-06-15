@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const app = require('./app');
+const createApp = require('./app');
 const { check_ipv4 } = require('./functions/ip_validation');
 const { check_fqdn } = require('./functions/fqdn_validation');
 
@@ -26,20 +26,20 @@ class Main {
             if (check_ipv4(host) || check_fqdn(host)) {
                 this.host = host;
             } else {
-                console.log(check_ipv4(host));
-                console.log(check_fqdn(host));
                 throw new Error(`Invalid hostname`);
             }
             this.port = parseInt(process.env.PORT, 10);
             if (0 > this.port >= 65536) {
                 throw new Error(`Port not within valid range.`);
             }
+
         } catch (err) {
             console.error(err);
             throw new Error(`Failed to parse environment variables.`);
         }
     }
     startServer() {
+        const app = createApp();
         this.server = app.listen(this.port, this.host, () => {
             console.log(`Server listening http://${this.host}:${this.port}`);
         });

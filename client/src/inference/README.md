@@ -26,6 +26,7 @@ with open('model.tflite', 'wb') as f:
 
 First install Python 3.7 to have a compatible version for TFLite Runtime Package
 
+This process can take up to 3 hours depending on Raspberry Pi model
 ```bash
 # Essentials
 sudo apt-get install -y build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev libffi-dev
@@ -76,14 +77,10 @@ python3.7 test.py
 
 ## IPC Socket
 
-The IPC Socket aims to communicate between the 2 main threads running on the device:
-The Python 3.9 program main.py that orchestrates
-- 1 thread asynchronously handling USB Sensor connection, GPIO Events, Measurements & States, and more...
-- 1 thread running the Bluetooth GATT UART Service
-
+The IPC Socket aims to communicate between the 2 main threads running on the device.
 IPC Socket reads the measurements made by the Nirone Sensor S2.0
 and runs the pre-treated 512 measurement point results to the interpreter
-Returning the results as output shape -> [ 0, 0, ...]
+Returning the results as output list of prob. -> [ 0, 0, 1]
 
 
 The BSD Server runs on startup to create 2 files for sockets

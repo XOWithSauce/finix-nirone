@@ -1,5 +1,7 @@
 const dotenv = require('dotenv');
 const http = require('http');
+const { check_ipv4 } = require('../functions/ip_validation');
+const { check_fqdn } = require('../functions/fqdn_validation');
 let instance;
 
 class ProxyConfig {
@@ -21,8 +23,6 @@ class ProxyConfig {
         instance = this;
         // initialize
         this.setupEnvironment();
-        // operate
-        this.formatProxyUrl();
         // cleanup
     }
     setupEnvironment() {
@@ -30,27 +30,24 @@ class ProxyConfig {
         dotenv.config();
         try {
             const ip = process.env.TF_PROXY_IP;
-            this.ip = ip;
-            const port = process.env.TF_PROXY_PORT;
-            this.port = port;
+            if (check_ipv4(ip) || check_fqdn(ip)) {
+                this.ip = ip;
+            } else {
+                throw new Error(`Invalid proxy hostname`);
+            }
+            this.port = parseInt(process.env.PORT, 10);
+            if (0 > this.port >= 65536) {
+                throw new Error(`Proxy Port not within valid range.`);
+            }
             const href = process.env.TF_PROXY_HREF;
             this.href = href;
+
             const protocol = process.env.TF_PROXY_PROTOCOL;
             this.protocol = protocol;
         } catch (error) {
-            console.error(err);
+            console.error(error);
             throw new Error(`Failed to parse environment variables.`);
         }
-    }
-    formatProxyUrl() { // Currently totally useless should delete
-        try {
-            const url = `${this.protocol}://${this.ip}:${this.port}/${this.href}`;
-            this.url = url
-        } catch (error) {
-            console.error(err)
-            throw new Error(`Failed to construct proxy url.`)
-        }
-
     }
     getInstance() {
         return this

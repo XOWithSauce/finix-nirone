@@ -1,4 +1,0 @@
-TF_PROXY_PROTOCOL=<http|https>
-TF_PROXY_PORT=<8000-8001>
-TF_PROXY_IP=<ip-or-fqdn>
-TF_PROXY_HREF=<empty|base/href/>

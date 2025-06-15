@@ -1,4 +1,4 @@
-const app = require("../src/app");
+const createApp = require('../src/app');
 const expect = require("chai").expect;
 const request = require("supertest");
 const fs = require("fs");
@@ -11,8 +11,12 @@ describe("Routes", () => {
   const base_url = `http://${host}:${port}/data`;
   /** @type {import('http').Server || undefined} */
   let server;
+  let app;
 
-  before((done) => (server = app.listen(port, host, () => done())));
+  before((done) => {
+    app = createApp();
+    server = app.listen(port, host, () => { done(); })
+  });
 
   it("Can get base_url", async () => {
     const response = await fetch(base_url);

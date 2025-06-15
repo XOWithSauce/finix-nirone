@@ -123,10 +123,10 @@ Navigate to the frontend directory.
 
 Before you can serve the static webpage with Nginx, you must specify the backend API URL in app.js, so proceed with:
 ```sudo nano app.js```
-Now change the parameter in first lines: `const BASE_URL = "http://example.com/api";`
-to match your virtual machine IP Address. Example:
+Now change the parameter in first lines: `const BASE_URL = "http://example.com/data";`
+to match your virtual machine IP Address and proxy route. Example:
 ```
-const BASE_URL = "http://12.34.56.78/api/get-by-did";
+const BASE_URL = "http://12.34.56.78/api";
 ```
 
 Start by moving the files to Nginx publicly served files directory:
@@ -275,14 +275,4 @@ Always returns a status code 200 and a JSON object with the following properties
 
 To run all tests (except proxy), run `npm run test`
 
-To run proxy specific test, run `npm run test-proxy-windows`
-##### Note (only Windows compatible), before proxy test:
-For proxy testing you need to create a new file called `.env.test` with content:
-```
-TF_PROXY_PROTOCOL='http'
-TF_PROXY_IP='10.0.0.12'
-TF_PROXY_PORT=8001
-TF_PROXY_HREF='v1/models/resnet:predict'
-```
-The content of the .env.test has to match the same url as described in `proxy.spec.js` nock url
-This allows you to modify the environment before proxy_config loads the environment variables, thus allowing you to test the route without real connection to proxy.
+Note: .env file must be present and filled with correct values

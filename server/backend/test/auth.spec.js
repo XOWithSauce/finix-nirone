@@ -1,15 +1,25 @@
 const { expect } = require('chai');
+const crypto = require("crypto");
+const dotenv = require('dotenv');
 const KeyValidator = require('../src/functions/key_validator');
 const keyValidator = new KeyValidator();
 
 describe("Auth validation tests", () => {
+
     it("Validates signatures correctly", () => {
         // clientSignature that would be extracted from headers
         // with headers["X-Hmac-Sig"]
-        let clientSig = '2919235b26d3233a33d116050303d0431d8960cd56ca1aec22e30f5a198aa2f3';
         // clientMessage is the unix utc timestamp for client
         // that was used in generating the signature
         let clientMessage = '1714258662';
+        // Because we compare shared key signatures we can use our key
+        // to assume that it matches
+        utf8Encode = new TextEncoder();
+        dotenv.config();
+        const shared_key = utf8Encode.encode(process.env.SHARED_KEY)
+        let clientSig = crypto.createHmac('sha256', shared_key)
+                                        .update(clientMessage)
+                                        .digest('hex');
 
         // Correct HMAC validation
         const result1 = keyValidator.isValidClientKey(clientSig, clientMessage);
@@ -22,7 +32,7 @@ describe("Auth validation tests", () => {
 
         // Client signature is incorrect for message
         clientMessage = '1714258662';
-        clientSig = '2919235b23d3233a33d116070303d0431da960cd56ca1aec22e30f5a1d8aa2f3';
+        clientSig = '1010205020d0283030d016070303d0301d0060cd00c01bec20e00f0a0d00a203';
         const result3 = keyValidator.isValidClientKey(clientSig, clientMessage);
         expect(result3).to.be.false;
     });

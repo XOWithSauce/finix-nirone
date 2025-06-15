@@ -67,11 +67,15 @@ class Device {
         for (let i = 0; i < meas.length; i++) {
             result.push( (meas[i] - dark[i]) / (white[i] - dark[i]) );
         }
-        let minAbsorption = Math.min(...result);
-        let maxAbsorption = Math.max(...result);
-        let scaledAbsorption = result.map(value => (value - minAbsorption) / (maxAbsorption - minAbsorption));
-        return scaledAbsorption;
+        let minReflectance = Math.min(...result);
+        let maxReflectance = Math.max(...result);
+        let scaledReflectance = result.map(value => (value - minReflectance) / (maxReflectance - minReflectance));
+        // TODO: Apply savgol filter after reflectance (translate to js and simplify based on https://github.com/scipy/scipy/blob/v1.15.3/scipy/signal/_savitzky_golay.py)
+        // Use params from Model / ThesisBase
+        return scaledReflectance;
     }
+
+
     // Get
     getDid() {
         return this.#did;

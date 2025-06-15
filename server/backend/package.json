@@ -6,20 +6,18 @@
   "scripts": {
     "start": "node src/main.js",
     "dev": "node --watch src/main.js",
-    "test": "mocha --exclude test/**/proxy.spec.js",
-    "test-proxy-windows": "mocha -r dotenv/config --exit dotenv_config_path=./.env.test --exit test/**/proxy.spec.js"
+    "test": "mocha test/**"
   },
   "author": "",
   "license": "custom",
   "dependencies": {
     "dotenv": "^16.1.1",
-    "express": "^4.18.2",
+    "express": "latest",
     "express-rate-limit": "^7.5.0"
   },
   "devDependencies": {
     "chai": "^4.3.7",
     "mocha": "^10.2.0",
-    "nock": "^13.5.3",
     "supertest": "^6.3.4"
   }
 }
